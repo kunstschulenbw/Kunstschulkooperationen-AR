@@ -67,8 +67,7 @@
 				const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
 
 				const mesh = new THREE.Mesh(geometry, material);
-				mesh.scale.set(2, 2, 2); // Skalierung auf das Doppelte
-				mesh.position.set((i - 1.5) * 1, 0, -0.5); // Abstand halb so weit
+				mesh.position.set((i - 1.5) * 2, 0, -1); // Abstand halb so weit
 				scene.add(mesh);
 				meshes.push(mesh);
 			}
