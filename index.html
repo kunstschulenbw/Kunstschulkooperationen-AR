@@ -16,15 +16,17 @@
 		import { ARButton } from 'https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARButton.js';
 
 		let camera, scene, renderer;
-		let mesh1, mesh2;
+		let meshes = [];
 
 		init();
 		// Wait for the images to load before starting AR initialization
 		Promise.all([
 			loadTexture('image01.png'),
-			loadTexture('image02.png')
+			loadTexture('image02.png'),
+			loadTexture('image03.png'),
+			loadTexture('image04.png')
 		]).then(textures => {
-			initAR(textures[0], textures[1]);
+			initAR(textures);
 		});
 
 		function init() {
@@ -56,25 +58,18 @@
 			});
 		}
 
-		function initAR(texture1, texture2) {
-			// Get the image's aspect ratios
-			const aspectRatio1 = texture1.image.width / texture1.image.height;
-			const aspectRatio2 = texture2.image.width / texture2.image.height;
+		function initAR(textures) {
+			for (let i = 0; i < textures.length; i++) {
+				const texture = textures[i];
+				const aspectRatio = texture.image.width / texture.image.height;
+				const geometry = new THREE.PlaneGeometry(1, 1 / aspectRatio);
+				const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
 
-			// Create plane geometries with the same aspect ratios as the images
-			const geometry1 = new THREE.PlaneGeometry(1, 1 / aspectRatio1);
-			const geometry2 = new THREE.PlaneGeometry(1, 1 / aspectRatio2);
-
-			const material1 = new THREE.MeshBasicMaterial({ map: texture1, side: THREE.DoubleSide });
-			const material2 = new THREE.MeshBasicMaterial({ map: texture2, side: THREE.DoubleSide });
-
-			mesh1 = new THREE.Mesh(geometry1, material1);
-			mesh1.position.set(-0.5, 0, -0.5); // Adjust the position as needed
-			scene.add(mesh1);
-
-			mesh2 = new THREE.Mesh(geometry2, material2);
-			mesh2.position.set(0.5, 0, -0.5); // Adjust the position as needed
-			scene.add(mesh2);
+				const mesh = new THREE.Mesh(geometry, material);
+				mesh.position.set((i - 1.5) * 1.5, 0, -0.5); // Adjust the position as needed
+				scene.add(mesh);
+				meshes.push(mesh);
+			}
 
 			// Add the AR button to the body of the DOM
 			document.body.appendChild(ARButton.createButton(renderer));
