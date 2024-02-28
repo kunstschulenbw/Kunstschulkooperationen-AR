@@ -19,7 +19,13 @@
 		let mesh1, mesh2;
 
 		init();
-		animate();
+		// Wait for the images to load before starting AR initialization
+		Promise.all([
+			loadTexture('image01.png'),
+			loadTexture('image02.png')
+		]).then(textures => {
+			initAR(textures[0], textures[1]);
+		});
 
 		function init() {
 			const container = document.createElement('div');
@@ -40,11 +46,17 @@
 			light.position.set(0.5, 1, 0.25);
 			scene.add(light);
 
-			// Load the image textures
-			const textureLoader = new THREE.TextureLoader();
-			const texture1 = textureLoader.load('image01.png'); // Adjust the filename as needed
-			const texture2 = textureLoader.load('image02.png'); // Adjust the filename as needed
+			window.addEventListener('resize', onWindowResize, false);
+		}
 
+		function loadTexture(imageUrl) {
+			return new Promise((resolve, reject) => {
+				const textureLoader = new THREE.TextureLoader();
+				textureLoader.load(imageUrl, resolve, undefined, reject);
+			});
+		}
+
+		function initAR(texture1, texture2) {
 			// Get the image's aspect ratios
 			const aspectRatio1 = texture1.image.width / texture1.image.height;
 			const aspectRatio2 = texture2.image.width / texture2.image.height;
@@ -67,7 +79,7 @@
 			// Add the AR button to the body of the DOM
 			document.body.appendChild(ARButton.createButton(renderer));
 
-			window.addEventListener('resize', onWindowResize, false);
+			animate();
 		}
 
 		function onWindowResize() {
