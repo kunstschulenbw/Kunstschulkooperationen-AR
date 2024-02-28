@@ -62,11 +62,11 @@
 			for (let i = 0; i < textures.length; i++) {
 				const texture = textures[i];
 				const aspectRatio = texture.image.width / texture.image.height;
-				const geometry = new THREE.PlaneGeometry(2, 2 / aspectRatio); // Doppelt so groß
+				const geometry = new THREE.PlaneGeometry(4, 4 / aspectRatio); // Doppelt so groß
 				const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
 
 				const mesh = new THREE.Mesh(geometry, material);
-				mesh.position.set((i - 1.5) * 0.75, 0, -0.5); // Abstand halb so weit
+				mesh.position.set((i - 1.5) * 0.4, 0, -0.5); // Abstand halb so weit
 				scene.add(mesh);
 				meshes.push(mesh);
 			}
