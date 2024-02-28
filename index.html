@@ -40,13 +40,16 @@
 			light.position.set(0.5, 1, 0.25);
 			scene.add(light);
 
-			// Create a plane geometry for the image
-			const geometry = new THREE.PlaneGeometry(1, 1);
-			
 			// Load the image texture
 			const textureLoader = new THREE.TextureLoader();
-			const texture = textureLoader.load('image01.png'); // Adjust the filename as needed
+			const texture = textureLoader.load('image01.jpg'); // Adjust the filename as needed
 
+			// Get the image's aspect ratio
+			const aspectRatio = texture.image.width / texture.image.height;
+
+			// Create a plane geometry with the same aspect ratio as the image
+			const geometry = new THREE.PlaneGeometry(1, 1 / aspectRatio);
+			
 			const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
 
 			mesh = new THREE.Mesh(geometry, material);
