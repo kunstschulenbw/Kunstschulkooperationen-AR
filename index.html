@@ -2,24 +2,43 @@
 <html lang="en">
 
 <head>
-	<title>Basic Scene with WebXR</title>
+	<title>Schulkooperationen in AR</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-	<link type="text/css" rel="stylesheet" href="style.css">
+	<style>
+		body {
+			margin: 0;
+			overflow: hidden;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		#ar-overlay {
+			position: absolute;
+			top: 0;
+			left: 0;
+			background-color: #333; /* Dunkelgrauer Hintergrund */
+			padding: 10px;
+		}
+	</style>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
+	<div id="ar-overlay">
+		<!-- AR Button wird hier positioniert -->
+	</div>
+
 	<script type="module">
-		// To start an AR scene with webXR, we can use a handy button provided by three.js
-		// We first have to import it because it is a javascript module
+		// AR Button
 		import { ARButton } from 'https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARButton.js';
 
 		let camera, scene, renderer;
 		let meshes = [];
 
 		init();
-		// Wait for the images to load before starting AR initialization
+		// Bilder
 		Promise.all([
 			loadTexture('image01.png'),
 			loadTexture('image02.png'),
@@ -40,7 +59,7 @@
 			renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 			renderer.setPixelRatio(window.devicePixelRatio);
 			renderer.setSize(window.innerWidth, window.innerHeight);
-			// This next line is important to enable the renderer for WebXR
+			// WebXR Renderer
 			renderer.xr.enabled = true; // New!
 			container.appendChild(renderer.domElement);
 
@@ -62,18 +81,19 @@
 			for (let i = 0; i < textures.length; i++) {
 				const texture = textures[i];
 				const aspectRatio = texture.image.width / texture.image.height;
-				const geometry = new THREE.PlaneGeometry(2, 2 / aspectRatio); // Doppelt so groß
+				const geometry = new THREE.PlaneGeometry(2, 2 / aspectRatio); // Größe
 
 				const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
 
 				const mesh = new THREE.Mesh(geometry, material);
-				mesh.position.set((i - 1.5) * 2, 0, -1); // Abstand halb so weit
+				mesh.position.set((i - 1.5) * 2, 0, -1); // Abstand 
 				scene.add(mesh);
 				meshes.push(mesh);
 			}
 
-			// Add the AR button to the body of the DOM
-			document.body.appendChild(ARButton.createButton(renderer));
+			// Position AR Button im Overlay
+			const arButtonOverlay = document.getElementById('ar-overlay');
+			arButtonOverlay.appendChild(ARButton.createButton(renderer));
 
 			animate();
 		}
@@ -97,4 +117,5 @@
 </body>
 
 </html>
+
 
