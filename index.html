@@ -5,31 +5,11 @@
 	<title>Schulkooperationen in AR</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-	<style>
-		body {
-			margin: 0;
-			overflow: hidden;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-		}
-
-		#ar-overlay {
-			position: absolute;
-			top: 0;
-			left: 0;
-			background-color: #333; /* Dunkelgrauer Hintergrund */
-			padding: 10px;
-		}
-	</style>
+	<link type="text/css" rel="stylesheet" href="style.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
-	<div id="ar-overlay">
-		<!-- AR Button wird hier positioniert -->
-	</div>
-
 	<script type="module">
 		// AR Button
 		import { ARButton } from 'https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARButton.js';
@@ -91,9 +71,8 @@
 				meshes.push(mesh);
 			}
 
-			// Position AR Button im Overlay
-			const arButtonOverlay = document.getElementById('ar-overlay');
-			arButtonOverlay.appendChild(ARButton.createButton(renderer));
+			// Position AR Button?
+			document.body.appendChild(ARButton.createButton(renderer));
 
 			animate();
 		}
