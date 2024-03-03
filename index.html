@@ -2,97 +2,152 @@
 <html lang="en">
 
 <head>
-	<title>Schulkooperationen in AR</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-	<link type="text/css" rel="stylesheet" href="style.css">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.js" crossorigin="anonymous"></script>
+    <title>Schulkooperationen in AR</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
-	<script type="module">
-		// AR Button
-		import { ARButton } from 'https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARButton.js';
+    <script type="module">
+        import { ARButton } from 'https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARButton.js';
 
-		let camera, scene, renderer;
-		let meshes = [];
+        let camera, scene, renderer;
+        let meshes = [];
 
-		init();
-		// Bilder laden vor AR
-		Promise.all([
-			loadTexture('image01.png'),
-			loadTexture('image02.png'),
-			loadTexture('image03.png'),
-			loadTexture('image04.png')
-		]).then(textures => {
-			initAR(textures);
-		});
+        init();
+        Promise.all([
+            loadTexture('image01.png'),
+            loadTexture('image02.png'),
+            loadTexture('image03.png'),
+            loadTexture('image04.png')
+        ]).then(textures => {
+            initAR(textures);
+        });
 
-		function init() {
-			const container = document.createElement('div');
-			document.body.appendChild(container);
+        function init() {
+            const container = document.createElement('div');
+            document.body.appendChild(container);
 
-			scene = new THREE.Scene();
+            scene = new THREE.Scene();
 
-			camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 40);
+            camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 40);
 
-			renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-			renderer.setPixelRatio(window.devicePixelRatio);
-			renderer.setSize(window.innerWidth, window.innerHeight);
-			// WebXR Renderer
-			renderer.xr.enabled = true; // New!
-			container.appendChild(renderer.domElement);
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.xr.enabled = true;
+            container.appendChild(renderer.domElement);
 
-			var light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
-			light.position.set(0.5, 1, 0.25);
-			scene.add(light);
+            var light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
+            light.position.set(0.5, 1, 0.25);
+            scene.add(light);
 
-			window.addEventListener('resize', onWindowResize, false);
-		}
+            window.addEventListener('resize', onWindowResize, false);
 
-		function loadTexture(imageUrl) {
-			return new Promise((resolve, reject) => {
-				const textureLoader = new THREE.TextureLoader();
-				textureLoader.load(imageUrl, resolve, undefined, reject);
-			});
-		}
+              const overlay = document.createElement('div');
+            overlay.id = 'overlay';
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.backgroundColor = 'rgb(48,48,48)';
+            overlay.style.zIndex = '999'; // Eine Ebene unter dem AR-Button
 
-		function initAR(textures) {
-			for (let i = 0; i < textures.length; i++) {
-				const texture = textures[i];
-				const aspectRatio = texture.image.width / texture.image.height;
-				const geometry = new THREE.PlaneGeometry(2, 2 / aspectRatio); // Größe
+            const titleText = document.createElement('div');
+            titleText.style.position = 'absolute'; // Position absolut setzen
+            titleText.style.top = '20%'; // 20% von oben
+            titleText.style.left = '50%'; // Horizontal zentrieren
+            titleText.style.transform = 'translateX(-50%)'; // Horizontal zentrieren
+            titleText.style.fontSize = '50px'; // Größere Schriftgröße
+            titleText.style.color = 'white';
 
-				const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+            const firstLine = document.createElement("span");
+            firstLine.textContent = "SCHULKOOPERATIONEN";
+            firstLine.style.color = 'white';
+            titleText.appendChild(firstLine);
 
-				const mesh = new THREE.Mesh(geometry, material);
-				mesh.position.set((i - 1.5) * 2, 0, -1); // Abstand
-				scene.add(mesh);
-				meshes.push(mesh);
-			}
+            const lineBreak = document.createElement("br");
+            titleText.appendChild(lineBreak);
 
-			// AR Button Position?
-			document.body.appendChild(ARButton.createButton(renderer));
+            const secondLine = document.createElement("span");
+            secondLine.textContent = "EINE AR GALERIE";
+            secondLine.style.color = 'blue';
+            titleText.appendChild(secondLine);
 
-			animate();
-		}
+            const image = document.createElement('img');
+            image.src = 'kunstschulen-bw-logo-lang.png'; // Pfad zum Bild hier einfügen
+            image.style.position = 'absolute'; // Position absolut setzen
+            image.style.bottom = '10%'; // Vertikal zentrieren
+            image.style.left = '50%'; // Horizontal zentrieren
+            image.style.width = '60%';
+            image.style.transform = 'translate(-50%, -50%)';
 
-		function onWindowResize() {
-			camera.aspect = window.innerWidth / window.innerHeight;
-			camera.updateProjectionMatrix();
+            overlay.appendChild(titleText);
+            overlay.appendChild(image);
+            document.body.appendChild(overlay);
 
-			renderer.setSize(window.innerWidth, window.innerHeight);
-		}
 
-		function animate() {
-			renderer.setAnimationLoop(render);
-		}
 
-		function render() {
-			renderer.render(scene, camera);
-		}
 
-	</script>
+        }
+
+        function loadTexture(imageUrl) {
+            return new Promise((resolve, reject) => {
+                const textureLoader = new THREE.TextureLoader();
+                textureLoader.load(imageUrl, resolve, undefined, reject);
+            });
+        }
+
+        function initAR(textures) {
+            for (let i = 0; i < textures.length; i++) {
+                const texture = textures[i];
+                const aspectRatio = texture.image.width / texture.image.height;
+                const geometry = new THREE.PlaneGeometry(2, 2 / aspectRatio);
+
+                const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+
+                const mesh = new THREE.Mesh(geometry, material);
+                mesh.position.set((i - 1.5) * 2, 0, -1);
+                scene.add(mesh);
+                meshes.push(mesh);
+            }
+
+            var arButton = ARButton.createButton(renderer);
+            arButton.style.color = '#F8F8FF';
+            arButton.style.top = '50%';
+            arButton.style.height = '10%';
+            arButton.style.width = '300';
+            arButton.style.background = 'rgb(205,197,191)';
+            arButton.style.zIndex = '1000';
+            arButton.addEventListener('click', onARButtonClick);
+            document.getElementById("overlay").appendChild(arButton);
+
+            animate();
+        }
+
+        function onARButtonClick() {
+            var element = document.getElementById("overlay");
+            element.disabled = true;
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            renderer.setAnimationLoop(render);
+        }
+
+        function render() {
+            renderer.render(scene, camera);
+        }
+
+    </script>
 </body>
 
 </html>
