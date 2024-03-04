@@ -38,9 +38,9 @@
 
         #image {
             position: absolute;
-            top: 90%;
+            top: 50%; /* Änderung der Position auf 50% von oben */
             left: 50%;
-            width: 60%;
+            width: 120%; /* Änderung der Breite auf 120% */
             transform: translate(-50%, -50%);
         }
 
@@ -118,10 +118,12 @@
             for (let i = 0; i < textures.length; i++) {
                 const texture = textures[i];
                 const aspectRatio = texture.image.width / texture.image.height;
-                const geometry = new THREE.PlaneGeometry(2, 2 / aspectRatio);
+                const geometry = new THREE.PlaneGeometry(4, 4 / aspectRatio); // Änderung der Größe auf 4
+
+                const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
 
                 const mesh = new THREE.Mesh(geometry, material);
-                mesh.position.set((i - 2) * 4, 0, -2);
+                mesh.position.set((i - 2) * 8, 0, -8); // Änderung der Position und Abstände
                 scene.add(mesh);
                 meshes.push(mesh);
             }
@@ -152,3 +154,4 @@
 </body>
 
 </html>
+
