@@ -36,9 +36,6 @@
             margin: 0 10px; /* Abstand zu den Seiten in Pixeln */
         }
 
-        #titleText span:last-child {
-            color: rgb(24, 138, 204); /* Geänderter Blauton für die zweite Textzeile */
-        }
 
         #image {
             position: absolute;
@@ -59,18 +56,18 @@
             z-index: 1000;
         }
     </style>
+    
 </head>
-
 <body>
     <div id="overlay">
         <div id="titleText">
             <span>SCHULKOOPERATIONEN</span>
             <br>
-            <span>EINE AR GALERIE</span>
+            <span style="color: #0099ff;">EINE AR GALERIE</span>
         </div>
         <img id="image" src="kunstschulen-bw-logo-lang.png">
-        <div id="arButton"></div>
     </div>
+        
 
     <script type="module">
         import { ARButton } from 'https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARButton.js';
