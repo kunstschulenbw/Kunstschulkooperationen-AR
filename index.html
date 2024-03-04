@@ -105,6 +105,9 @@
         }
 
         function initAR(textures) {
+            const radius = 10; // Adjust the radius as needed
+            const angleIncrement = (2 * Math.PI) / textures.length;
+
             for (let i = 0; i < textures.length; i++) {
                 const texture = textures[i];
                 const aspectRatio = texture.image.width / texture.image.height;
@@ -112,8 +115,12 @@
 
                 const material = new THREE.MeshStandardMaterial({ map: texture, transparent: true, opacity: 1.0, side: THREE.DoubleSide });
 
+                const angle = i * angleIncrement;
+                const x = radius * Math.cos(angle);
+                const y = radius * Math.sin(angle);
+
                 const mesh = new THREE.Mesh(geometry, material);
-                mesh.position.set((i - 2) * 7, 0, -5);
+                mesh.position.set(x, y, -5);
                 scene.add(mesh);
                 meshes.push(mesh);
             }
