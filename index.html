@@ -76,7 +76,7 @@
 
         init();
         Promise.all([
-            loadTexture('image01.png'),
+            loadTexture('image01.jpg'),
             loadTexture('image02.png'),
             loadTexture('image03.png'),
             loadTexture('image04.png'),
@@ -119,7 +119,8 @@
                 const aspectRatio = texture.image.width / texture.image.height;
                 const geometry = new THREE.PlaneGeometry(2, 2 / aspectRatio);
 
-                const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+                // Material mit emissive-Attribut für den blauen Leuchteffekt
+                const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide, emissive: 0x0000ff });
 
                 const mesh = new THREE.Mesh(geometry, material);
                 mesh.position.set((i - 2) * 4, 0, -2);
