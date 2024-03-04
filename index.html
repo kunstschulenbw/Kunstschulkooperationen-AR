@@ -105,10 +105,11 @@
         }
 
         function initAR(textures) {
-            const radius = 10; // Adjust the radius as needed
-            const angleIncrement = (2 * Math.PI) / textures.length;
+            const radius = 10; // Radius um die Kamera
+            const numTextures = textures.length;
+            const angleIncrement = (2 * Math.PI) / numTextures;
 
-            for (let i = 0; i < textures.length; i++) {
+            for (let i = 0; i < numTextures; i++) {
                 const texture = textures[i];
                 const aspectRatio = texture.image.width / texture.image.height;
                 const geometry = new THREE.PlaneGeometry(5, 5 / aspectRatio);
@@ -117,10 +118,10 @@
 
                 const angle = i * angleIncrement;
                 const x = radius * Math.cos(angle);
-                const y = radius * Math.sin(angle);
+                const z = radius * Math.sin(angle);
 
                 const mesh = new THREE.Mesh(geometry, material);
-                mesh.position.set(x, y, -5);
+                mesh.position.set(x, 0, z);
                 scene.add(mesh);
                 meshes.push(mesh);
             }
