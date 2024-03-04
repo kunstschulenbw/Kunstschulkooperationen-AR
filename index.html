@@ -122,6 +122,10 @@
 
                 const mesh = new THREE.Mesh(geometry, material);
                 mesh.position.set(x, 0, z);
+                
+                // Richte die Vorderseite des Bildes zur Kamera aus
+                mesh.lookAt(0, 0, 0);
+                
                 scene.add(mesh);
                 meshes.push(mesh);
             }
