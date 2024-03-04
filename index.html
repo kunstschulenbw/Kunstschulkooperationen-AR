@@ -29,11 +29,15 @@
         }
 
         #titleText {
-            font-size: 5vw; /* Schriftgröße in vw-Einheiten (responsive) */
+            font-size: 7vw; /* Schriftgröße in vw-Einheiten (responsive) */
             color: white;
             font-family: 'Kode Mono', monospace;
             text-align: center;
             margin: 0 10px; /* Abstand zu den Seiten in Pixeln */
+        }
+
+        #titleText span:last-child {
+            color: rgb(24, 138, 204); /* Geänderter Blauton für die zweite Textzeile */
         }
 
         #image {
@@ -43,6 +47,17 @@
             width: 60%;
             transform: translate(-50%, -50%);
         }
+
+        #arButton {
+            position: absolute;
+            color: white;
+            top: 50%;
+            height: 10%;
+            width: 300px;
+            background: rgb(24, 138, 204); /* Geänderter Hintergrund-Farbton für den AR-Button */
+            font-family: 'Kode Mono', monospace; /* Geänderter Font für den AR-Button */
+            z-index: 1000;
+        }
     </style>
 </head>
 
@@ -51,9 +66,10 @@
         <div id="titleText">
             <span>SCHULKOOPERATIONEN</span>
             <br>
-            <span style="color: blue;">EINE AR GALERIE</span>
+            <span>EINE AR GALERIE</span>
         </div>
         <img id="image" src="kunstschulen-bw-logo-lang.png">
+        <div id="arButton"></div>
     </div>
 
     <script type="module">
@@ -68,7 +84,7 @@
             loadTexture('image02.png'),
             loadTexture('image03.png'),
             loadTexture('image04.png'),
-            loadTexture('image05.png')
+           
         ]).then(textures => {
             initAR(textures);
         });
@@ -115,22 +131,12 @@
                 meshes.push(mesh);
             }
 
+            // Erstelle AR-Button
             var arButton = ARButton.createButton(renderer);
-            arButton.style.color = '#F8F8FF';
-            arButton.style.top = '50%';
-            arButton.style.height = '10%';
-            arButton.style.width = '300';
-            arButton.style.background = 'rgb(205,197,191)';
             arButton.style.zIndex = '1000';
-            arButton.addEventListener('click', onARButtonClick);
             document.getElementById("overlay").appendChild(arButton);
 
             animate();
-        }
-
-        function onARButtonClick() {
-            var element = document.getElementById("overlay");
-            element.disabled = true;
         }
 
         function onWindowResize() {
@@ -151,3 +157,4 @@
 </body>
 
 </html>
+
