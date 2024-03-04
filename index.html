@@ -59,7 +59,7 @@
 <body>
     <div id="overlay">
         <div id="titleText">
-            <span>SCHULKOOPERATIONEN</span>
+            <span>KUNSTSCHULEN IM GANZTAG</span>
             <br>
             <span style="color: #0099ff;">EINE AR GALERIE</span>
         </div>
@@ -76,10 +76,11 @@
 
         init();
         Promise.all([
-            loadTexture('image01.jpg'),
+            loadTexture('image01.png'),
             loadTexture('image02.png'),
             loadTexture('image03.png'),
             loadTexture('image04.png'),
+            loadTexture('image05.png')
            
         ]).then(textures => {
             initAR(textures);
