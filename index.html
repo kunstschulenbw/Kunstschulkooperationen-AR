@@ -38,7 +38,7 @@
 
         #image {
             position: absolute;
-            bottom: 10%;
+            top: 20%;
             left: 50%;
             width: 60%;
             transform: translate(-50%, -50%);
@@ -47,7 +47,7 @@
         #arButton {
             position: absolute;
             color: white;
-            top: 50%;
+            top: 70%; /* Änderung der Position auf 70% von oben */
             height: 10%;
             width: 300px;
             background: rgb(24, 138, 204); /* Geänderter Hintergrund-Farbton für den AR-Button */
@@ -64,6 +64,7 @@
             <br>
             <span style="color: #0099ff;">EINE AR GALERIE</span>
         </div>
+        <div id="arButton"></div> <!-- AR-Button vor das Image-Element verschieben -->
         <img id="image" src="kunstschulen-bw-logo-lang.png">
     </div>
         
@@ -130,7 +131,7 @@
             // Erstelle AR-Button
             var arButton = ARButton.createButton(renderer);
             arButton.style.zIndex = '1000';
-            document.getElementById("overlay").appendChild(arButton);
+            document.getElementById("arButton").appendChild(arButton);
 
             animate();
         }
@@ -153,3 +154,4 @@
 </body>
 
 </html>
+
