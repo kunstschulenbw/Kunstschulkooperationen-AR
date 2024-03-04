@@ -5,10 +5,59 @@
     <title>Schulkooperationen in AR</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kode+Mono:wght@400..700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgb(48, 48, 48);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #titleText {
+            font-size: 5vw; /* Schriftgröße in vw-Einheiten (responsive) */
+            color: white;
+            font-family: 'Kode Mono', monospace;
+            text-align: center;
+            margin: 0 20px; /* Abstand zu den Seiten in Pixeln */
+        }
+
+        #image {
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            width: 60%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* ... andere Stile ... */
+    </style>
 </head>
 
 <body>
+    <div id="overlay">
+        <div id="titleText">
+            <span>SCHULKOOPERATIONEN</span>
+            <br>
+            <span style="color: blue;">EINE AR GALERIE</span>
+        </div>
+        <img id="image" src="kunstschulen-bw-logo-lang.png">
+    </div>
+
     <script type="module">
         import { ARButton } from 'https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARButton.js';
 
@@ -20,7 +69,8 @@
             loadTexture('image01.png'),
             loadTexture('image02.png'),
             loadTexture('image03.png'),
-            loadTexture('image04.png')
+            loadTexture('image04.png'),
+            loadTexture('image05.png')
         ]).then(textures => {
             initAR(textures);
         });
@@ -44,53 +94,6 @@
             scene.add(light);
 
             window.addEventListener('resize', onWindowResize, false);
-
-              const overlay = document.createElement('div');
-            overlay.id = 'overlay';
-            overlay.style.position = 'fixed';
-            overlay.style.top = '0';
-            overlay.style.left = '0';
-            overlay.style.width = '100%';
-            overlay.style.height = '100%';
-            overlay.style.backgroundColor = 'rgb(48,48,48)';
-            overlay.style.zIndex = '999'; // Eine Ebene unter dem AR-Button
-
-            const titleText = document.createElement('div');
-            titleText.style.position = 'absolute'; // Position absolut setzen
-            titleText.style.top = '20%'; // 20% von oben
-            titleText.style.left = '50%'; // Horizontal zentrieren
-            titleText.style.transform = 'translateX(-50%)'; // Horizontal zentrieren
-            titleText.style.fontSize = '50px'; // Größere Schriftgröße
-            titleText.style.color = 'white';
-
-            const firstLine = document.createElement("span");
-            firstLine.textContent = "SCHULKOOPERATIONEN";
-            firstLine.style.color = 'white';
-            titleText.appendChild(firstLine);
-
-            const lineBreak = document.createElement("br");
-            titleText.appendChild(lineBreak);
-
-            const secondLine = document.createElement("span");
-            secondLine.textContent = "EINE AR GALERIE";
-            secondLine.style.color = 'blue';
-            titleText.appendChild(secondLine);
-
-            const image = document.createElement('img');
-            image.src = 'kunstschulen-bw-logo-lang.png'; // Pfad zum Bild hier einfügen
-            image.style.position = 'absolute'; // Position absolut setzen
-            image.style.bottom = '10%'; // Vertikal zentrieren
-            image.style.left = '50%'; // Horizontal zentrieren
-            image.style.width = '60%';
-            image.style.transform = 'translate(-50%, -50%)';
-
-            overlay.appendChild(titleText);
-            overlay.appendChild(image);
-            document.body.appendChild(overlay);
-
-
-
-
         }
 
         function loadTexture(imageUrl) {
@@ -109,7 +112,7 @@
                 const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
 
                 const mesh = new THREE.Mesh(geometry, material);
-                mesh.position.set((i - 1.5) * 2, 0, -1);
+                mesh.position.set((i - 2) * 4, 0, -2);
                 scene.add(mesh);
                 meshes.push(mesh);
             }
@@ -146,7 +149,6 @@
         function render() {
             renderer.render(scene, camera);
         }
-
     </script>
 </body>
 
