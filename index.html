@@ -118,7 +118,7 @@
             for (let i = 0; i < textures.length; i++) {
                 const texture = textures[i];
                 const aspectRatio = texture.image.width / texture.image.height;
-                const geometry = new THREE.PlaneGeometry(4, 4 / aspectRatio); // Änderung der Größe auf 4
+                const geometry = new THREE.PlaneGeometry(6, 6 / aspectRatio); // Änderung der Größe auf 4
 
                 const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
 
