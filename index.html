@@ -43,8 +43,8 @@
             width: 60%;
             transform: translate(-50%, -50%);
 
-           } 
-               
+           }
+
         #arButton {
             position: absolute;
             color: white;
@@ -54,22 +54,39 @@
             font-family: 'Kode Mono', monospace;
             z-index: 1000;
         }
+
+        .spinner {
+           position: absolute;
+           top: 55%;
+           width: 50px;
+           height: 50px;
+           border: 5px solid #f3f3f3;
+           border-top: 5px solid #3498db;
+           border-radius: 50%;
+           animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
     </style>
-    
+
 </head>
 <body>
-    <div id="overlay">
-        <div id="titleText">
-            <span>KUNSTSCHULEN IM GANZTAG</span>
-            <br>
-            <span style="color: #0099ff;">EINE AR GALERIE</span>
-        </div>
-        <div id="arButton"></div>
-        <img id="image" src="kunstschulen-bw-logo-lang.png">
+<div id="overlay">
+    <div id="titleText">
+        <span>KUNSTSCHULEN IM GANZTAG</span>
+        <br>
+        <span style="color: #0099ff;">EINE AR GALERIE</span>
     </div>
-        
+    <div id="arButton"></div>
+    <div class="spinner" id="spinner"></div>
+    <img id="image" src="kunstschulen-bw-logo-lang.png">
+</div>
 
-    <script type="module">
+
+<script type="module">
         import { ARButton } from 'https://unpkg.com/three@0.126.0/examples/jsm/webxr/ARButton.js';
 
         let camera, scene, renderer;
@@ -105,6 +122,7 @@
             scene.add(light);
 
             window.addEventListener('resize', onWindowResize, false);
+
         }
 
         function loadTexture(imageUrl) {
@@ -115,14 +133,14 @@
         }
 
         function initAR(textures) {
-            const radius = 10; // Radius um die Kamera
+            const radius = 1; // Radius um die Kamera
             const numTextures = textures.length;
             const angleIncrement = (2 * Math.PI) / numTextures;
 
             for (let i = 0; i < numTextures; i++) {
                 const texture = textures[i];
                 const aspectRatio = texture.image.width / texture.image.height;
-                const geometry = new THREE.PlaneGeometry(7, 7 / aspectRatio);
+                const geometry = new THREE.PlaneGeometry(4, 4 / aspectRatio);
 
                 const material = new THREE.MeshStandardMaterial({ map: texture, transparent: true, opacity: 1.0, side: THREE.DoubleSide });
 
@@ -132,10 +150,10 @@
 
                 const mesh = new THREE.Mesh(geometry, material);
                 mesh.position.set(x, 0, z);
-                
+
                 // Richtet die Vorderseite des Bildes zur Kamera aus
                 mesh.lookAt(0, 0, 0);
-                
+
                 scene.add(mesh);
                 meshes.push(mesh);
             }
@@ -143,7 +161,7 @@
             var arButton = ARButton.createButton(renderer);
             arButton.style.zIndex = '1000';
             document.getElementById("arButton").appendChild(arButton);
-
+            stopLoading();
             animate();
         }
 
@@ -160,6 +178,12 @@
 
         function render() {
             renderer.render(scene, camera);
+        }
+
+        function stopLoading() {
+            var spinner = document.getElementById("spinner");
+            spinner.classList.remove("spinner");
+            spinner.style.borderTopColor = "transparent";
         }
     </script>
 </body>
