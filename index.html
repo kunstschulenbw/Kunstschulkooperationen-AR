@@ -133,14 +133,14 @@
         }
 
         function initAR(textures) {
-            const radius = 1; // Radius um die Kamera
+            const radius = 2; // Radius um die Kamera
             const numTextures = textures.length;
             const angleIncrement = (2 * Math.PI) / numTextures;
 
             for (let i = 0; i < numTextures; i++) {
                 const texture = textures[i];
                 const aspectRatio = texture.image.width / texture.image.height;
-                const geometry = new THREE.PlaneGeometry(4, 4 / aspectRatio);
+                const geometry = new THREE.PlaneGeometry(3, 3 / aspectRatio);
 
                 const material = new THREE.MeshStandardMaterial({ map: texture, transparent: true, opacity: 1.0, side: THREE.DoubleSide });
 
